@@ -66,7 +66,8 @@ function sendRequest(el, videoId) {
 
 function prepareData(videoId) {
     let data = {
-        id: videoId
+        id: videoId,
+        api: true
     };
  
     return data;

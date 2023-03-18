@@ -1,0 +1,5 @@
+youtube_transcript_api
+openai
+tiktoken
+markdown
+Flask
