@@ -5,6 +5,7 @@ import markdown
 
 from summarizer import Summarizer
 from transcriber import Transcriber
+from bot import Bot
 
 app = Flask(__name__)
 
@@ -25,6 +26,13 @@ def api():
     summary = summarizerInstance.transcription_summarize(transcription, "html")
     htmlSummary = markdown.markdown(summary)
     return jsonify({'summary': htmlSummary})
+
+@app.route("/bot/telegram", methods=["POST"])
+def bot_telegram():
+    data = request.get_json()
+    bot = Bot()
+    asyncio.run(bot.bot_tele(data))
+    return jsonify({'status': 'ok'})
 
 def initServices():
     summarizerInstance = Summarizer()
