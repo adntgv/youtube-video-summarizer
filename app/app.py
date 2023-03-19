@@ -13,8 +13,16 @@ app = Flask(__name__)
 def hello():
     return "Hello world!"
 
-@app.route("/api/summarize", methods=["POST"])
+@app.route("/api/summarize", methods=["POST", "OPTIONS"])
 def api():
+    if request.method == "OPTIONS":
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '3600'
+        }
+        return ('', 204, headers)
     data = request.get_json()
     id = data['id'] if 'id' in data else None
     if not id:
@@ -25,7 +33,14 @@ def api():
         return jsonify({'error': 'Could not transcribe'})
     summary = summarizerInstance.transcription_summarize(transcription, "html")
     htmlSummary = markdown.markdown(summary)
-    return jsonify({'summary': htmlSummary})
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Max-Age': '3600'
+    }
+    
+    return jsonify({'summary': htmlSummary}), 200, headers
 
 @app.route("/bot/telegram", methods=["POST"])
 def bot_telegram():
