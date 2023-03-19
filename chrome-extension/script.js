@@ -45,8 +45,9 @@ function sendRequest(el, videoId) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    // on mouse hover
-                    el.innerHTML = xhr.responseText;
+                    // set summary text from json response
+                    let data = JSON.parse(xhr.responseText); 
+                    el.innerHTML = data.summary;
                 } else {
                     el.innerHTML = "Error: " + xhr.responseText;
                     console.log("Error: ", xhr.status, xhr.responseText);

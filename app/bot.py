@@ -11,13 +11,20 @@ from transcriber import Transcriber
 
 class Bot(): 
     async def summary(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        id = update.message.text.split(" ")[1] 
-        print("summarize")
-        await update.message.reply_text(text="Summarizing...")
-        transcription = Transcriber().youtube_transcribe(id)
-        summary = Summarizer().transcription_summarize(transcription, "html")
-        print("respond")
-        await update.message.reply_text(text=summary)
+        try:
+            partAfterV = update.message.text.split("?v=")[1] 
+            id = partAfterV.split("&")[0]
+            print("transcribe")
+            await update.message.reply_text(text="Transcribing...")
+            transcription = await Transcriber().youtube_transcribe(id)
+            print("summarize")
+            await update.message.reply_text(text="Summarizing...")
+            summary = Summarizer().transcription_summarize(transcription, "html")
+            print("respond")
+            await update.message.reply_text(text=summary)
+        except Exception as e:
+            print(e)
+            await update.message.reply_text(text="Error")
 
     async def bot_tele(self, text):
         # Create application

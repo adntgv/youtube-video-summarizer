@@ -13,7 +13,7 @@ app = Flask(__name__)
 def hello():
     return "Hello world!"
 
-@app.route("/api", methods=["POST"])
+@app.route("/api/summarize", methods=["POST"])
 def api():
     data = request.get_json()
     id = data['id'] if 'id' in data else None
